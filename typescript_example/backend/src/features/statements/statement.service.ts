@@ -2,23 +2,33 @@ import { PrismaClient, Statement, Transaction } from "../../../generated/prisma_
 
 const prisma = new PrismaClient();
 
-export const createStatement = async (userId: number, name: string): Promise<Statement> => {
-    return prisma.statement.create({
-        data: { 
-            user: { 
-                connect: {
-                 id: userId,
-                },
-            },
-            name: name,
+type StatementWithTransactions = Statement & { transactions: Transaction[] };
+
+export const createStatement = async (
+  userId: string,
+  name: string,
+): Promise<StatementWithTransactions> => {
+  const parsedUserId = parseInt(userId);
+
+  return prisma.statement.create({
+    data: {
+      user: {
+        connect: {
+          id: parsedUserId,
         },
-    });
+      },
+      name: name,
+    },
+    include: { transactions: true },
+  });
 };
 
-export const getStatementsByUser = async (userId: number): Promise<(Statement & { transactions: Transaction[] })[]> => {
-    return prisma.statement.findMany({
-        where: { userId },
-        orderBy: { createdAt: "desc" },
-        include: { transactions: true },
-    });
+export const getStatementsByUser = async (userId: string): Promise<StatementWithTransactions[]> => {
+  const parsedUserId = parseInt(userId);
+
+  return prisma.statement.findMany({
+    where: { userId: parsedUserId },
+    orderBy: { createdAt: "desc" },
+    include: { transactions: true },
+  });
 };

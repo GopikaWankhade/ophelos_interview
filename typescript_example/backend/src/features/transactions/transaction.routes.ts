@@ -5,7 +5,7 @@ import { createTransactionsSchema } from "./transaction.schema";
 
 const router = Router({ mergeParams: true });
 
-router.post('/', validate(createTransactionsSchema), createTransactionsHandler);
+router.post("/", validate(createTransactionsSchema), createTransactionsHandler);
 
 router.get("/", listTransactionsHandler);
 

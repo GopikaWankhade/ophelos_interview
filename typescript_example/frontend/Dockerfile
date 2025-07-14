@@ -1,6 +1,7 @@
 FROM node:slim AS builder
 WORKDIR /app
 COPY package*.json tsconfig.json next.config.ts ./
+COPY postcss.config.mjs ./
 COPY public ./public
 COPY src ./src
 RUN npm ci

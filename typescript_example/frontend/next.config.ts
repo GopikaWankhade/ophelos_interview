@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
       {
         source: "/api/:path*",
         destination: "http://server:3000/:path*",
-      }
-    ]
+      },
+    ];
   },
 };
 

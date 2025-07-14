@@ -1,4 +1,3 @@
-
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
@@ -23,13 +22,12 @@ const {
   Public,
   getRuntime,
   createParam,
-} = require('./runtime/library.js')
+} = require("./runtime/library.js");
 
+const Prisma = {};
 
-const Prisma = {}
-
-exports.Prisma = Prisma
-exports.$Enums = {}
+exports.Prisma = Prisma;
+exports.$Enums = {};
 
 /**
  * Prisma Client JS version: 6.6.0
@@ -37,197 +35,198 @@ exports.$Enums = {}
  */
 Prisma.prismaVersion = {
   client: "6.6.0",
-  engine: "f676762280b54cd07c770017ed3711ddde35f37a"
-}
+  engine: "f676762280b54cd07c770017ed3711ddde35f37a",
+};
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
-Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
-Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
-Prisma.PrismaClientInitializationError = PrismaClientInitializationError
-Prisma.PrismaClientValidationError = PrismaClientValidationError
-Prisma.Decimal = Decimal
+Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError;
+Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError;
+Prisma.PrismaClientInitializationError = PrismaClientInitializationError;
+Prisma.PrismaClientValidationError = PrismaClientValidationError;
+Prisma.Decimal = Decimal;
 
 /**
  * Re-export of sql-template-tag
  */
-Prisma.sql = sqltag
-Prisma.empty = empty
-Prisma.join = join
-Prisma.raw = raw
-Prisma.validator = Public.validator
+Prisma.sql = sqltag;
+Prisma.empty = empty;
+Prisma.join = join;
+Prisma.raw = raw;
+Prisma.validator = Public.validator;
 
 /**
-* Extensions
-*/
-Prisma.getExtensionContext = Extensions.getExtensionContext
-Prisma.defineExtension = Extensions.defineExtension
+ * Extensions
+ */
+Prisma.getExtensionContext = Extensions.getExtensionContext;
+Prisma.defineExtension = Extensions.defineExtension;
 
 /**
  * Shorthand utilities for JSON filtering
  */
-Prisma.DbNull = objectEnumValues.instances.DbNull
-Prisma.JsonNull = objectEnumValues.instances.JsonNull
-Prisma.AnyNull = objectEnumValues.instances.AnyNull
+Prisma.DbNull = objectEnumValues.instances.DbNull;
+Prisma.JsonNull = objectEnumValues.instances.JsonNull;
+Prisma.AnyNull = objectEnumValues.instances.AnyNull;
 
 Prisma.NullTypes = {
   DbNull: objectEnumValues.classes.DbNull,
   JsonNull: objectEnumValues.classes.JsonNull,
-  AnyNull: objectEnumValues.classes.AnyNull
-}
+  AnyNull: objectEnumValues.classes.AnyNull,
+};
 
-
-
-
-  const path = require('path')
+const path = require("path");
 
 /**
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
-  Serializable: 'Serializable'
+  ReadUncommitted: "ReadUncommitted",
+  ReadCommitted: "ReadCommitted",
+  RepeatableRead: "RepeatableRead",
+  Serializable: "Serializable",
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  createdAt: 'createdAt',
-  email: 'email',
-  name: 'name',
-  password: 'password'
+  id: "id",
+  createdAt: "createdAt",
+  email: "email",
+  name: "name",
+  password: "password",
 };
 
 exports.Prisma.StatementScalarFieldEnum = {
-  id: 'id',
-  createdAt: 'createdAt',
-  name: 'name',
-  userId: 'userId'
+  id: "id",
+  createdAt: "createdAt",
+  name: "name",
+  userId: "userId",
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {
-  id: 'id',
-  type: 'type',
-  amount_in_cents: 'amount_in_cents',
-  label: 'label',
-  description: 'description',
-  createdAt: 'createdAt',
-  statementId: 'statementId'
+  id: "id",
+  type: "type",
+  amount_in_cents: "amount_in_cents",
+  label: "label",
+  description: "description",
+  createdAt: "createdAt",
+  statementId: "statementId",
 };
 
 exports.Prisma.SortOrder = {
-  asc: 'asc',
-  desc: 'desc'
+  asc: "asc",
+  desc: "desc",
 };
 
 exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
+  default: "default",
+  insensitive: "insensitive",
 };
 
 exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
+  first: "first",
+  last: "last",
 };
 exports.TransactionType = exports.$Enums.TransactionType = {
-  Income: 'Income',
-  Expenditure: 'Expenditure'
+  Income: "Income",
+  Expenditure: "Expenditure",
 };
 
 exports.Prisma.ModelName = {
-  User: 'User',
-  Statement: 'Statement',
-  Transaction: 'Transaction'
+  User: "User",
+  Statement: "Statement",
+  Transaction: "Transaction",
 };
 /**
  * Create the Client
  */
 const config = {
-  "generator": {
-    "name": "client",
-    "provider": {
-      "fromEnvVar": null,
-      "value": "prisma-client-js"
+  generator: {
+    name: "client",
+    provider: {
+      fromEnvVar: null,
+      value: "prisma-client-js",
     },
-    "output": {
-      "value": "/Users/joshua/source/ophelos_interview/typescript_example/backend/generated/prisma_client",
-      "fromEnvVar": null
+    output: {
+      value:
+        "/Users/joshua/source/ophelos_interview/typescript_example/backend/generated/prisma_client",
+      fromEnvVar: null,
     },
-    "config": {
-      "engineType": "library"
+    config: {
+      engineType: "library",
     },
-    "binaryTargets": [
+    binaryTargets: [
       {
-        "fromEnvVar": null,
-        "value": "darwin-arm64",
-        "native": true
-      }
+        fromEnvVar: null,
+        value: "darwin-arm64",
+        native: true,
+      },
     ],
-    "previewFeatures": [],
-    "sourceFilePath": "/Users/joshua/source/ophelos_interview/typescript_example/backend/prisma/schema.prisma",
-    "isCustomOutput": true
+    previewFeatures: [],
+    sourceFilePath:
+      "/Users/joshua/source/ophelos_interview/typescript_example/backend/prisma/schema.prisma",
+    isCustomOutput: true,
   },
-  "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+  relativeEnvPaths: {
+    rootEnvPath: null,
+    schemaEnvPath: "../../.env",
   },
-  "relativePath": "../../prisma",
-  "clientVersion": "6.6.0",
-  "engineVersion": "f676762280b54cd07c770017ed3711ddde35f37a",
-  "datasourceNames": [
-    "db"
-  ],
-  "activeProvider": "postgresql",
-  "inlineDatasources": {
-    "db": {
-      "url": {
-        "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:password@localhost:5432/postgres?schema=public"
-      }
-    }
+  relativePath: "../../prisma",
+  clientVersion: "6.6.0",
+  engineVersion: "f676762280b54cd07c770017ed3711ddde35f37a",
+  datasourceNames: ["db"],
+  activeProvider: "postgresql",
+  inlineDatasources: {
+    db: {
+      url: {
+        fromEnvVar: "DATABASE_URL",
+        value: "postgresql://postgres:password@localhost:5432/postgres?schema=public",
+      },
+    },
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma_client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int         @id @default(autoincrement())\n  createdAt  DateTime    @default(now())\n  email      String      @unique\n  name       String\n  password   String\n  statements Statement[]\n}\n\nmodel Statement {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  name      String\n\n  user   User @relation(fields: [userId], references: [id])\n  userId Int\n\n  transactions Transaction[]\n\n  @@index([userId])\n}\n\nmodel Transaction {\n  id              Int             @id @default(autoincrement())\n  type            TransactionType\n  amount_in_cents Int\n  label           String\n  description     String?\n  createdAt       DateTime        @default(now())\n\n  statement   Statement @relation(fields: [statementId], references: [id])\n  statementId Int\n}\n\nenum TransactionType {\n  Income\n  Expenditure\n}\n",
-  "inlineSchemaHash": "fbba6807ec4782b37365baf401da7ba94975cd3101a9e0e7f486ab2c5751cb08",
-  "copyEngine": true
+  inlineSchema:
+    '// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = "prisma-client-js"\n  output   = "../generated/prisma_client"\n}\n\ndatasource db {\n  provider = "postgresql"\n  url      = env("DATABASE_URL")\n}\n\nmodel User {\n  id         Int         @id @default(autoincrement())\n  createdAt  DateTime    @default(now())\n  email      String      @unique\n  name       String\n  password   String\n  statements Statement[]\n}\n\nmodel Statement {\n  id        Int      @id @default(autoincrement())\n  createdAt DateTime @default(now())\n  name      String\n\n  user   User @relation(fields: [userId], references: [id])\n  userId Int\n\n  transactions Transaction[]\n\n  @@index([userId])\n}\n\nmodel Transaction {\n  id              Int             @id @default(autoincrement())\n  type            TransactionType\n  amount_in_cents Int\n  label           String\n  description     String?\n  createdAt       DateTime        @default(now())\n\n  statement   Statement @relation(fields: [statementId], references: [id])\n  statementId Int\n}\n\nenum TransactionType {\n  Income\n  Expenditure\n}\n',
+  inlineSchemaHash: "fbba6807ec4782b37365baf401da7ba94975cd3101a9e0e7f486ab2c5751cb08",
+  copyEngine: true,
+};
+
+const fs = require("fs");
+
+config.dirname = __dirname;
+if (!fs.existsSync(path.join(__dirname, "schema.prisma"))) {
+  const alternativePaths = ["generated/prisma_client", "prisma_client"];
+
+  const alternativePath =
+    alternativePaths.find((altPath) => {
+      return fs.existsSync(path.join(process.cwd(), altPath, "schema.prisma"));
+    }) ?? alternativePaths[0];
+
+  config.dirname = path.join(process.cwd(), alternativePath);
+  config.isBundled = true;
 }
 
-const fs = require('fs')
+config.runtimeDataModel = JSON.parse(
+  '{"models":{"User":{"dbName":null,"schema":null,"fields":[{"name":"id","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":true,"isReadOnly":false,"hasDefaultValue":true,"type":"Int","nativeType":null,"default":{"name":"autoincrement","args":[]},"isGenerated":false,"isUpdatedAt":false},{"name":"createdAt","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":true,"type":"DateTime","nativeType":null,"default":{"name":"now","args":[]},"isGenerated":false,"isUpdatedAt":false},{"name":"email","kind":"scalar","isList":false,"isRequired":true,"isUnique":true,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"String","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"name","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"String","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"password","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"String","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"statements","kind":"object","isList":true,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"Statement","nativeType":null,"relationName":"StatementToUser","relationFromFields":[],"relationToFields":[],"isGenerated":false,"isUpdatedAt":false}],"primaryKey":null,"uniqueFields":[],"uniqueIndexes":[],"isGenerated":false},"Statement":{"dbName":null,"schema":null,"fields":[{"name":"id","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":true,"isReadOnly":false,"hasDefaultValue":true,"type":"Int","nativeType":null,"default":{"name":"autoincrement","args":[]},"isGenerated":false,"isUpdatedAt":false},{"name":"createdAt","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":true,"type":"DateTime","nativeType":null,"default":{"name":"now","args":[]},"isGenerated":false,"isUpdatedAt":false},{"name":"name","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"String","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"user","kind":"object","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"User","nativeType":null,"relationName":"StatementToUser","relationFromFields":["userId"],"relationToFields":["id"],"isGenerated":false,"isUpdatedAt":false},{"name":"userId","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":true,"hasDefaultValue":false,"type":"Int","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"transactions","kind":"object","isList":true,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"Transaction","nativeType":null,"relationName":"StatementToTransaction","relationFromFields":[],"relationToFields":[],"isGenerated":false,"isUpdatedAt":false}],"primaryKey":null,"uniqueFields":[],"uniqueIndexes":[],"isGenerated":false},"Transaction":{"dbName":null,"schema":null,"fields":[{"name":"id","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":true,"isReadOnly":false,"hasDefaultValue":true,"type":"Int","nativeType":null,"default":{"name":"autoincrement","args":[]},"isGenerated":false,"isUpdatedAt":false},{"name":"type","kind":"enum","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"TransactionType","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"amount_in_cents","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"Int","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"label","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"String","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"description","kind":"scalar","isList":false,"isRequired":false,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"String","nativeType":null,"isGenerated":false,"isUpdatedAt":false},{"name":"createdAt","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":true,"type":"DateTime","nativeType":null,"default":{"name":"now","args":[]},"isGenerated":false,"isUpdatedAt":false},{"name":"statement","kind":"object","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":false,"hasDefaultValue":false,"type":"Statement","nativeType":null,"relationName":"StatementToTransaction","relationFromFields":["statementId"],"relationToFields":["id"],"isGenerated":false,"isUpdatedAt":false},{"name":"statementId","kind":"scalar","isList":false,"isRequired":true,"isUnique":false,"isId":false,"isReadOnly":true,"hasDefaultValue":false,"type":"Int","nativeType":null,"isGenerated":false,"isUpdatedAt":false}],"primaryKey":null,"uniqueFields":[],"uniqueIndexes":[],"isGenerated":false}},"enums":{"TransactionType":{"values":[{"name":"Income","dbName":null},{"name":"Expenditure","dbName":null}],"dbName":null}},"types":{}}',
+);
+defineDmmfProperty(exports.Prisma, config.runtimeDataModel);
+config.engineWasm = undefined;
+config.compilerWasm = undefined;
 
-config.dirname = __dirname
-if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
-  const alternativePaths = [
-    "generated/prisma_client",
-    "prisma_client",
-  ]
-  
-  const alternativePath = alternativePaths.find((altPath) => {
-    return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'))
-  }) ?? alternativePaths[0]
-
-  config.dirname = path.join(process.cwd(), alternativePath)
-  config.isBundled = true
-}
-
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":null,\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"password\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"statements\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Statement\",\"nativeType\":null,\"relationName\":\"StatementToUser\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"Statement\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":null,\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"nativeType\":null,\"relationName\":\"StatementToUser\",\"relationFromFields\":[\"userId\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"userId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"transactions\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Transaction\",\"nativeType\":null,\"relationName\":\"StatementToTransaction\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"Transaction\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"type\",\"kind\":\"enum\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"TransactionType\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"amount_in_cents\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"label\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"description\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":null,\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"statement\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Statement\",\"nativeType\":null,\"relationName\":\"StatementToTransaction\",\"relationFromFields\":[\"statementId\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"statementId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"Int\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{\"TransactionType\":{\"values\":[{\"name\":\"Income\",\"dbName\":null},{\"name\":\"Expenditure\",\"dbName\":null}],\"dbName\":null}},\"types\":{}}")
-defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
-config.engineWasm = undefined
-config.compilerWasm = undefined
-
-
-const { warnEnvConflicts } = require('./runtime/library.js')
+const { warnEnvConflicts } = require("./runtime/library.js");
 
 warnEnvConflicts({
-    rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
-    schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
-})
+  rootEnvPath:
+    config.relativeEnvPaths.rootEnvPath &&
+    path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath:
+    config.relativeEnvPaths.schemaEnvPath &&
+    path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath),
+});
 
-const PrismaClient = getPrismaClient(config)
-exports.PrismaClient = PrismaClient
-Object.assign(exports, Prisma)
+const PrismaClient = getPrismaClient(config);
+exports.PrismaClient = PrismaClient;
+Object.assign(exports, Prisma);
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "generated/prisma_client/libquery_engine-darwin-arm64.dylib.node")
+path.join(process.cwd(), "generated/prisma_client/libquery_engine-darwin-arm64.dylib.node");
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/prisma_client/schema.prisma")
+path.join(process.cwd(), "generated/prisma_client/schema.prisma");

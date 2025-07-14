@@ -11,4 +11,4 @@ COPY . .
 
 RUN npm ci
 
-CMD ["sh", "-c", "npm run db:deploy && npm run dev"]
+CMD ["sh", "-c", "npm run db:deploy && npm run seed && npm run dev"]

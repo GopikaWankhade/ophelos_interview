@@ -15,13 +15,11 @@ app.use(cors({ origin: "http://localhost:3001", credentials: true }));
 
 // Route Definitions
 app.get("/", async (req, res) => {
-    const userCount = await prisma.user.count();
+  const userCount = await prisma.user.count();
 
-    res.json(
-        userCount == 0
-        ? "No users have been created."
-        : `${userCount} user/s has/have been created.`
-    );
+  res.json(
+    userCount == 0 ? "No users have been created." : `${userCount} user/s has/have been created.`,
+  );
 });
 
 app.use("/api/users", userRoutes);
