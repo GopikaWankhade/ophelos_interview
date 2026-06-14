@@ -1,6 +1,5 @@
 # Local Claude Code config (machine-specific: contains absolute paths)
 .claude/settings.local.json
-SESSION_LOG.md
 
 # Python
 __pycache__/
