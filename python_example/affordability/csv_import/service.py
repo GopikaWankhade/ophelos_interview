@@ -99,7 +99,9 @@ def commit_import(user, month_groups, choices):
         existing = Statement.objects.filter(
             user=user, statement_period=group.period).first()
         if existing:
-            if choices.get(group.period, "skip") == "skip":
+            # Only an explicit "replace" overwrites; anything else (missing or an
+            # unexpected value) is treated as the safe default: skip.
+            if choices.get(group.period) != "replace":
                 skipped += 1
                 continue
             existing.transactions.all().delete()

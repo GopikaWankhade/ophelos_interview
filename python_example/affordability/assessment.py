@@ -110,8 +110,6 @@ class TrendPoint:
     expenditure_ratio: Decimal | None  # spending as % of income; None if income 0
     status: str
     status_label: str           # plain-language status, e.g. "Surplus"
-    delta: Decimal | None       # signed change vs previous month's money left over
-    delta_magnitude: Decimal | None  # abs(delta); the arrow conveys direction
     start_balance: Decimal      # running balance carried in (cumulative)
     end_balance: Decimal        # start_balance + disposable_income (may be negative)
 
@@ -128,12 +126,9 @@ class Trend:
 def build_trend(months):
     ordered = sorted(months, key=lambda m: m.period)
     points = []
-    previous = None
     running = Decimal("0.00")    # cumulative balance, first month starts at zero
     for m in ordered:
         a = assess(m.total_income, m.total_expenditure, m.has_transactions)
-        delta = None if previous is None else (a.disposable_income - previous)
-        delta_magnitude = None if delta is None else abs(delta)
         start_balance = running
         end_balance = start_balance + a.disposable_income
         points.append(TrendPoint(
@@ -142,21 +137,23 @@ def build_trend(months):
             disposable_income=a.disposable_income,
             expenditure_ratio=a.expenditure_ratio, status=a.status,
             status_label=STATUS_LABELS[a.status],
-            delta=delta, delta_magnitude=delta_magnitude,
             start_balance=start_balance, end_balance=end_balance,
         ))
-        previous = a.disposable_income
         running = end_balance
 
-    if len(points) < 2:
+    # Summary stats ignore "no data" (empty) months so they don't dilute the
+    # average or flip the trajectory.
+    data_points = [p for p in points if p.status != STATUS_NO_DATA]
+
+    if len(data_points) < 2:
         trajectory = "n/a"
     else:
-        change = points[-1].disposable_income - points[-2].disposable_income
+        change = data_points[-1].disposable_income - data_points[-2].disposable_income
         trajectory = "improving" if change > 0 else "worsening" if change < 0 else "stable"
 
-    if points:
-        total = sum((p.disposable_income for p in points), Decimal("0.00"))
-        average = (total / len(points)).quantize(TWO_PLACES)
+    if data_points:
+        total = sum((p.disposable_income for p in data_points), Decimal("0.00"))
+        average = (total / len(data_points)).quantize(TWO_PLACES)
     else:
         average = None
     months_in_surplus = sum(1 for p in points if p.status == STATUS_SURPLUS)

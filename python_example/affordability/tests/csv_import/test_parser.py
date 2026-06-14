@@ -58,6 +58,20 @@ def test_row_errors_are_collected_not_raised():
     assert result.rows[0].description == "Good"
 
 
+def test_nan_and_scientific_notation_are_invalid():
+    text = (
+        "Date,Description,Debit,Credit\n"
+        "2026-01-05,Nan,NaN,\n"
+        "2026-01-06,Sci,1e3,\n"
+        "2026-01-07,Good,10.00,\n"
+    )
+    result = parse_bank_csv(text, TODAY)
+    assert len(result.rows) == 1
+    assert result.rows[0].description == "Good"
+    assert len(result.row_errors) == 2
+    assert all("valid number" in e.message.lower() for e in result.row_errors)
+
+
 def test_amount_too_large_is_row_error():
     # Exceeds DecimalField(max_digits=10, decimal_places=2) capacity.
     text = "Date,Description,Debit,Credit\n2026-01-05,Big,150000000.00,\n"

@@ -31,25 +31,32 @@ def test_trend_summary_stats():
     assert t.average_disposable_income == Decimal("150.00")  # (500 + -200) / 2
 
 
-def test_single_month_trend_has_no_delta():
+def test_single_month_trend_has_no_trajectory():
     t = build_trend([_m(2026, 1, "2000", "1500")])
     assert len(t.points) == 1
-    assert t.points[0].delta is None
     assert t.trajectory == "n/a"
 
 
-def test_orders_by_period_and_computes_deltas():
+def test_orders_by_period():
     t = build_trend([
         _m(2026, 3, "2000", "1800"),  # surplus 200
         _m(2026, 1, "2000", "1500"),  # surplus 500
         _m(2026, 2, "2000", "1600"),  # surplus 400
     ])
     assert [p.period for p in t.points] == [date(2026, 1, 1), date(2026, 2, 1), date(2026, 3, 1)]
-    assert t.points[0].delta is None
-    assert t.points[1].delta == Decimal("-100.00")  # 400 - 500
-    assert t.points[1].delta_magnitude == Decimal("100.00")  # arrow shows direction
-    assert t.points[2].delta == Decimal("-200.00")  # 200 - 400
-    assert t.trajectory == "worsening"
+    assert t.trajectory == "worsening"  # 200 < 400 (latest two months)
+
+
+def test_no_data_months_excluded_from_average_and_trajectory():
+    # An empty (no-transaction) month must not dilute the average or flip the trend.
+    t = build_trend([
+        _m(2026, 1, "1000", "1200"),          # deficit -200
+        MonthInput(date(2026, 2, 1), Decimal("0"), Decimal("0"), False),  # no data
+    ])
+    # Average is over the single real month, not (-200 + 0)/2.
+    assert t.average_disposable_income == Decimal("-200.00")
+    # Only one month has data, so no trajectory (and not "improving" via the 0).
+    assert t.trajectory == "n/a"
 
 
 def test_trend_point_carries_spending_ratio():

@@ -44,7 +44,7 @@ def statements(request):
 @login_required
 def new_statement(request):
     if request.method == 'POST':
-        statement_form = StatementForm(request.POST)
+        statement_form = StatementForm(request.POST, user=request.user)
         transaction_formset = TransactionFormSet(request.POST)
 
         if statement_form.is_valid() and transaction_formset.is_valid():
@@ -60,7 +60,7 @@ def new_statement(request):
             return redirect('statements')
 
     else:
-        statement_form = StatementForm()
+        statement_form = StatementForm(user=request.user)
         transaction_formset = TransactionFormSet()
 
     return render(request, 'statements/new.html', {

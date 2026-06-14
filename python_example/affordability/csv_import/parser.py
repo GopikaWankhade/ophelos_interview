@@ -9,6 +9,7 @@ from __future__ import annotations
 import calendar
 import csv
 import io
+import re
 from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
@@ -27,6 +28,9 @@ HEADER_ALIASES = {
 
 _INVALID = object()
 TWO_PLACES = Decimal("0.01")
+# A plain decimal number only — rejects NaN, Infinity, and scientific notation
+# (e.g. "1e3"), which Decimal() would otherwise accept silently.
+_AMOUNT_RE = re.compile(r"^-?\d+(\.\d+)?$")
 
 # Limits that mirror the database fields, so an out-of-range row becomes a clean
 # per-row error in the preview instead of crashing the atomic commit
@@ -176,6 +180,8 @@ def _parse_amount(s):
     cleaned = s.replace("£", "").replace(",", "").replace(" ", "")
     if cleaned in ("", "-"):
         return None
+    if not _AMOUNT_RE.match(cleaned):
+        return _INVALID
     try:
         return Decimal(cleaned).quantize(TWO_PLACES, rounding=ROUND_HALF_UP)
     except (InvalidOperation, ValueError):

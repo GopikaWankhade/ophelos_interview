@@ -87,6 +87,17 @@ def test_commit_skips_existing_month_by_default():
 
 
 @pytest.mark.django_db
+def test_commit_treats_unknown_choice_as_skip():
+    user = User.objects.create_user(username="cx", password="pw")
+    period = date(2026, 1, 31)
+    Statement.objects.create(user=user, statement_period=period)
+    groups = [_group(period, [_row(5, "expenditure", "10.00")])]
+    result = import_service.commit_import(user, groups, {period: "garbage"})
+    assert result.skipped_statements == 1     # not replaced
+    assert Transaction.objects.count() == 0
+
+
+@pytest.mark.django_db
 def test_commit_replaces_existing_month_when_chosen():
     user = User.objects.create_user(username="c3", password="pw")
     period = date(2026, 1, 31)

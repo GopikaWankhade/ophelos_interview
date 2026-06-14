@@ -1,3 +1,4 @@
+import calendar
 import pytest
 from datetime import date
 from decimal import Decimal
@@ -63,12 +64,15 @@ def test_create_statement_view(client):
     test_user = User.objects.create_user(username="testuser", password="testpass")
     client.login(username=test_user.username, password="testpass")
 
+    today = date.today()
+    month_end = date(today.year, today.month, calendar.monthrange(today.year, today.month)[1])
     response = client.post(reverse("new_statement"), {
-        "statement_period": date.today(),
+        "statement_period": month_end.isoformat(),
         "transactions-TOTAL_FORMS": 5,
         "transactions-INITIAL_FORMS": 0,
     })
     assert Statement.objects.count() == 1
+    assert Statement.objects.first().statement_period == month_end  # normalised
     assert response.status_code == 302
     assert response.url == "/statements/"
 

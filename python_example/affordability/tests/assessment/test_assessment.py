@@ -34,3 +34,10 @@ def test_breakeven_is_tight():
     a = assess(Decimal("1000.00"), Decimal("1000.00"), has_transactions=True)
     assert a.disposable_income == Decimal("0.00")
     assert a.status == STATUS_TIGHT
+
+
+def test_status_boundaries_around_zero():
+    # Just below zero is a deficit; exactly zero is tight; just above is surplus.
+    assert assess(Decimal("100.00"), Decimal("100.01"), has_transactions=True).status == STATUS_DEFICIT
+    assert assess(Decimal("100.00"), Decimal("100.00"), has_transactions=True).status == STATUS_TIGHT
+    assert assess(Decimal("100.01"), Decimal("100.00"), has_transactions=True).status == STATUS_SURPLUS

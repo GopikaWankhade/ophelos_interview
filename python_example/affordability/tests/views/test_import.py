@@ -120,6 +120,18 @@ def test_confirm_creates_statements_and_clears_token(client, tmp_import_dir):
 
 
 @pytest.mark.django_db
+def test_import_success_message_shows_once_on_statements(client, tmp_import_dir):
+    _login(client)
+    _upload_and_get_token(client)
+    resp = client.post(reverse("import_csv_confirm"), {}, follow=True)
+    # The success message is shown on the page we land on (statements)...
+    assert "Imported" in resp.content.decode()
+    # ...and is consumed there, so it does not linger on the next page load.
+    again = client.get(reverse("statements"))
+    assert "Imported" not in again.content.decode()
+
+
+@pytest.mark.django_db
 def test_confirm_replace_existing_month(client, tmp_import_dir):
     _login(client)
     user = User.objects.get(username="imp")

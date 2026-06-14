@@ -1,3 +1,5 @@
+import calendar
+from datetime import date
 from decimal import Decimal, ROUND_HALF_UP
 
 from django import forms
@@ -5,14 +7,50 @@ from django.conf import settings
 from django.forms import inlineformset_factory
 from .models import Statement, Transaction
 
+MONTHS_OFFERED = 12
+
+
+def month_end(year, month):
+    return date(year, month, calendar.monthrange(year, month)[1])
+
+
 class StatementForm(forms.ModelForm):
-    statement_period = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        required=True
-    )
+    # A statement is per-month: pick a month, stored as that month's last day.
+    statement_period = forms.ChoiceField(choices=[], label="Month")
+
     class Meta:
         model = Statement
         fields = ['statement_period']
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['statement_period'].choices = self._available_months(user)
+
+    @staticmethod
+    def _available_months(user):
+        """The last 12 months (current first), excluding months the user already
+        has a statement for, so taken months can't be selected."""
+        taken = set()
+        if user is not None and getattr(user, "pk", None):
+            taken = set(Statement.objects.filter(user=user)
+                        .values_list("statement_period", flat=True))
+        today = date.today()
+        year, month = today.year, today.month
+        choices = []
+        for _ in range(MONTHS_OFFERED):
+            end = month_end(year, month)
+            if end not in taken:
+                choices.append((end.isoformat(), end.strftime("%B %Y")))
+            month -= 1
+            if month == 0:
+                month, year = 12, year - 1
+        return choices
+
+    def clean_statement_period(self):
+        try:
+            return date.fromisoformat(self.cleaned_data["statement_period"])
+        except (TypeError, ValueError):
+            raise forms.ValidationError("Please choose a month.")
 
 class TransactionForm(forms.ModelForm):
     # Accept extra precision so we can round (rather than reject) to 2 dp.

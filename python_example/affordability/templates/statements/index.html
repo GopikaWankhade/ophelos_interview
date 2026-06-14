@@ -1,6 +1,12 @@
 {% load money_format %}
 <h1>Your Statements</h1>
 
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
 <p>
   <a href="{% url 'import_csv' %}"><strong>Import bank statement (CSV)</strong></a>
   &nbsp;|&nbsp;
