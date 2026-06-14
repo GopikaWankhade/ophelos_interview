@@ -1,0 +1,16 @@
+# Local Claude Code config (machine-specific: contains absolute paths)
+.claude/settings.local.json
+# Prompt-history cutoff marker (session-specific)
+tools/.prompt_history_cutoff
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Django local database (local dev data — not for submission)
+db.sqlite3
+
+# OS
+.DS_Store

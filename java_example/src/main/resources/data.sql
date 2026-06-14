@@ -1,2 +1,0 @@
-INSERT INTO "user" (username, password, currency) SELECT 'user', '{bcrypt}$2a$10$avroOhQT/72rqDWv0/XnSOyiyqnfl83ZZHVWU2savjh3tkhOByBF2', 'GBP' WHERE NOT EXISTS (SELECT 1 FROM "user" WHERE username = 'user');
-INSERT INTO "user" (username, password, currency) SELECT 'guest', '{bcrypt}$2a$10$avroOhQT/72rqDWv0/XnSOyiyqnfl83ZZHVWU2savjh3tkhOByBF2', 'GBP' WHERE NOT EXISTS (SELECT 1 FROM "user" WHERE username = 'guest');
