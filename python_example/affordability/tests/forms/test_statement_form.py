@@ -1,4 +1,5 @@
 import pytest
+from decimal import Decimal
 from datetime import date, timedelta
 from affordability.forms import StatementForm
 

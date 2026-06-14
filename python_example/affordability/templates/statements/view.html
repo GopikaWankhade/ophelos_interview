@@ -1,13 +1,51 @@
+{% load money_format %}
 <h1>Statement for {{ statement.statement_period }}</h1>
 
-<h2>Transactions</h2>
+<section class="affordability">
+  <h2>{{ message.headline }}</h2>
+  <p>{{ message.body }}</p>
 
+  <h3>How we worked this out</h3>
+  <ul>
+    {% if balance %}
+      <li>Start balance: {{ balance.start_balance|money }}</li>
+    {% endif %}
+    <li>Total income: {{ assessment.total_income|money }}</li>
+    <li>Total spending: {{ assessment.total_expenditure|money }}</li>
+    <li>Money left over: {{ assessment.disposable_income|money }}</li>
+    {% if balance %}
+      <li>End balance: {{ balance.end_balance|money }}</li>
+    {% endif %}
+    {% if assessment.expenditure_ratio is not None %}
+      <li>Spending is {{ assessment.expenditure_ratio }}% of your income</li>
+    {% else %}
+      <li>Spending as a share of income: not available (no income recorded)</li>
+    {% endif %}
+  </ul>
+
+  {% if balance and balance.end_balance < 0 %}
+    <p>Your balance is overdrawn by {{ balance.end_balance|absval|money }} at the end of this month.</p>
+  {% endif %}
+
+  {% if message.show_signposting %}
+    <h3>Free, confidential support</h3>
+    <ul>
+      {% for s in signposts %}
+        <li><a href="{{ s.url }}">{{ s.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if assessment.status == 'deficit' %}
+    <p><small>{{ disclaimer }}</small></p>
+  {% endif %}
+</section>
+
+<h2>Transactions</h2>
 {% if statement.transactions.all %}
     <ul>
         {% for transaction in statement.transactions.all %}
-            <li>
-                {{ transaction.category }}: {{ transaction.amount }} - {{ transaction.description }}
-            </li>
+            <li>{{ transaction.category }}: {{ transaction.amount|money }} - {{ transaction.description }}</li>
         {% endfor %}
     </ul>
 {% else %}

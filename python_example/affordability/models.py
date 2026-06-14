@@ -10,13 +10,6 @@ import calendar
 class Statement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="statements", db_index=True)
     statement_period = models.DateField()
-    total_outstanding_debt = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        validators=[MinValueValidator(Decimal("0.00"))],
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

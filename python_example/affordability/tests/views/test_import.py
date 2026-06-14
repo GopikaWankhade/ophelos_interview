@@ -36,7 +36,7 @@ def test_upload_shows_preview_with_two_months(client, tmp_import_dir):
     assert resp.status_code == 200
     assert "Check your import" in body
     assert "2020" in body
-    assert "2000.00" in body and "800.00" in body
+    assert "£2,000.00" in body and "£800.00" in body   # money-formatted amounts
     assert client.session.get("import_token")  # token stored, not file
 
 

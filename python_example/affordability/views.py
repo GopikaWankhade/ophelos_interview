@@ -9,6 +9,8 @@ from django.utils import timezone
 from .forms import StatementForm, TransactionFormSet, CsvUploadForm
 from .models import Statement
 from .csv_import import parser as csv_import, service as import_service
+from .assessment import assess_statement, build_user_trend
+from .messaging import message_for, SIGNPOSTS, DISCLAIMER
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +33,13 @@ def index(request):
 
 @login_required
 def statements(request):
-    statements = Statement.objects.filter(user=request.user)
-    return render(request, 'statements/index.html', {'statements': statements})
+    statements = list(Statement.objects.filter(user=request.user)
+                      .order_by('statement_period'))
+    trend = build_user_trend(statements)
+    return render(request, 'statements/index.html', {
+        'statements': statements,
+        'trend': trend,
+    })
 
 @login_required
 def new_statement(request):
@@ -64,9 +71,19 @@ def new_statement(request):
 @login_required
 def view_statement(request, statement_id):
     statement = get_object_or_404(Statement, id=statement_id, user=request.user)
-
+    assessment = assess_statement(statement)
+    # Running start/end balance for this month, derived across all the user's months.
+    trend = build_user_trend(
+        Statement.objects.filter(user=request.user).order_by('statement_period'))
+    balance = next((p for p in trend.points
+                    if p.period == statement.statement_period), None)
     return render(request, 'statements/view.html', {
-        'statement': statement
+        'statement': statement,
+        'assessment': assessment,
+        'balance': balance,
+        'message': message_for(assessment),
+        'signposts': SIGNPOSTS,
+        'disclaimer': DISCLAIMER,
     })
 
 

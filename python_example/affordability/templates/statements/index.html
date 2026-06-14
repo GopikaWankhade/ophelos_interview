@@ -1,6 +1,62 @@
+{% load money_format %}
 <h1>Your Statements</h1>
 
-<p><a href="{% url 'import_csv' %}"><strong>Import bank statement (CSV)</strong></a></p>
+<p>
+  <a href="{% url 'import_csv' %}"><strong>Import bank statement (CSV)</strong></a>
+  &nbsp;|&nbsp;
+  <a href="{% url 'new_statement' %}"><strong>Create new statement</strong></a>
+</p>
+
+{% if trend.points %}
+  <h2>Your position</h2>
+
+  {% if trend.average_disposable_income is not None %}
+    {% if trend.average_disposable_income < 0 %}
+      <p>On average you're spending more than your income — about
+         {{ trend.average_disposable_income|absval|money }} short each month.</p>
+      {% if trend.trajectory == 'improving' %}
+        <p>It's improving compared with last month, but you're still spending more than you earn.</p>
+      {% endif %}
+    {% else %}
+      <p>On average you have {{ trend.average_disposable_income|money }} left over each month.</p>
+      {% if trend.trajectory == 'improving' %}
+        <p>Your money left over is trending up.</p>
+      {% elif trend.trajectory == 'worsening' %}
+        <p>Your money left over is trending down.</p>
+      {% elif trend.trajectory == 'stable' %}
+        <p>Your money left over is holding steady.</p>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+  <p>{{ trend.months_in_surplus }} of {{ trend.points|length }} month{{ trend.points|length|pluralize }} in surplus{% if trend.months_in_deficit %}, {{ trend.months_in_deficit }} in deficit{% endif %}.</p>
+
+  <table border="1" cellpadding="4">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Start balance</th>
+        <th>Income</th>
+        <th>Total spending</th>
+        <th>Money left over</th>
+        <th>Spending %</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in trend.points %}
+        <tr>
+          <td>{{ p.period }}</td>
+          <td>{{ p.start_balance|money }}</td>
+          <td>{{ p.total_income|money }}</td>
+          <td>{{ p.total_expenditure|money }}</td>
+          <td>{{ p.disposable_income|money }}</td>
+          <td>{% if p.expenditure_ratio is None %}—{% else %}{{ p.expenditure_ratio }}%{% endif %}</td>
+          <td>{{ p.status_label }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
 
 {% if statements %}
     <ul>
@@ -15,5 +71,3 @@
 {% else %}
     <p>No statements available.</p>
 {% endif %}
-
-<a href="{% url 'new_statement' %}">Create New Statement</a>

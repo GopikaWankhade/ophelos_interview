@@ -1,3 +1,4 @@
+{% load money_format %}
 <h1>Check your import</h1>
 
 {% if row_errors %}
@@ -17,8 +18,8 @@
       {% for item in preview %}
         <tr>
           <td>{{ item.group.period }}</td>
-          <td>£{{ item.group.total_income }}</td>
-          <td>£{{ item.group.total_expenditure }}</td>
+          <td>{{ item.group.total_income|money }}</td>
+          <td>{{ item.group.total_expenditure|money }}</td>
           <td>{{ item.group.rows|length }}</td>
           <td>
             {% if item.exists %}
