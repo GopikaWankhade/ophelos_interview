@@ -1,7 +1,6 @@
 # Local Claude Code config (machine-specific: contains absolute paths)
 .claude/settings.local.json
-# Prompt-history cutoff marker (session-specific)
-tools/.prompt_history_cutoff
+SESSION_LOG.md
 
 # Python
 __pycache__/
