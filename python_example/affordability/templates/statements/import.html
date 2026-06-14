@@ -1,0 +1,19 @@
+<h1>Import a bank statement</h1>
+
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<p>Upload a CSV exported from your bank. It needs columns for <strong>date</strong>,
+   <strong>description</strong>, and <strong>debit and/or credit</strong>
+   (money out / money in).</p>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Upload and preview</button>
+</form>
+
+<a href="{% url 'statements' %}">Back to Statements</a>

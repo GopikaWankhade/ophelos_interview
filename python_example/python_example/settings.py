@@ -123,3 +123,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Bank CSV import
+# Private, non-web-served temp area for uploaded files (deleted after import).
+IMPORT_TMP_DIR = BASE_DIR / '.import_tmp'
+MAX_IMPORT_FILE_SIZE = 5 * 1024 * 1024  # 5 MB

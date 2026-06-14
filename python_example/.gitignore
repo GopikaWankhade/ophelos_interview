@@ -1,2 +1,5 @@
 **/__pycache__/*
 db.sqlite3
+
+# Transient bank-CSV uploads (never committed)
+.import_tmp/

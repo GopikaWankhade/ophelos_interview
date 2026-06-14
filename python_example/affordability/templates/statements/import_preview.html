@@ -1,0 +1,41 @@
+<h1>Check your import</h1>
+
+{% if row_errors %}
+  <h2>{{ row_errors|length }} row(s) will be skipped</h2>
+  <ul>
+    {% for e in row_errors %}<li>Row {{ e.row_number }}: {{ e.message }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<form method="post" action="{% url 'import_csv_confirm' %}">
+  {% csrf_token %}
+  <table>
+    <thead>
+      <tr><th>Month</th><th>Income</th><th>Spending</th><th>Rows</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      {% for item in preview %}
+        <tr>
+          <td>{{ item.group.period }}</td>
+          <td>£{{ item.group.total_income }}</td>
+          <td>£{{ item.group.total_expenditure }}</td>
+          <td>{{ item.group.rows|length }}</td>
+          <td>
+            {% if item.exists %}
+              Already exists —
+              <label><input type="radio"
+                name="choice-{{ item.group.period|date:'Y-m-d' }}" value="replace"> Replace</label>
+              <label><input type="radio"
+                name="choice-{{ item.group.period|date:'Y-m-d' }}" value="skip" checked> Skip</label>
+            {% else %}
+              New
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="submit">Confirm import</button>
+</form>
+
+<a href="{% url 'import_csv' %}">Upload a different file</a>

@@ -1,5 +1,7 @@
 <h1>Your Statements</h1>
 
+<p><a href="{% url 'import_csv' %}"><strong>Import bank statement (CSV)</strong></a></p>
+
 {% if statements %}
     <ul>
         {% for statement in statements %}

@@ -1,13 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from datetime import date
+from decimal import Decimal
 import calendar
 
 
 class Statement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="statements", db_index=True)
     statement_period = models.DateField()
+    total_outstanding_debt = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -40,7 +49,12 @@ class Transaction(models.Model):
     statement = models.ForeignKey(Statement, on_delete=models.CASCADE, related_name="transactions", db_index=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     description = models.CharField(max_length=100)
-    amount = models.PositiveIntegerField()
+    transaction_date = models.DateField(null=True, blank=True)
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

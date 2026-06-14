@@ -5,8 +5,6 @@ from django.urls import reverse
 from affordability.models import Statement, Transaction
 
 @pytest.mark.django_db
-
-@pytest.mark.django_db
 def test_statements_view_requires_login(client):
     response = client.get(reverse("statements"))
     assert response.status_code == 302
