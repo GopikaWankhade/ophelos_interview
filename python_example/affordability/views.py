@@ -6,10 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .forms import StatementForm, TransactionFormSet, CsvUploadForm
+from .forms import StatementForm, TransactionFormSet, CsvUploadForm, OverviewRangeForm
 from .models import Statement
 from .csv_import import parser as csv_import, service as import_service
-from .assessment import assess_statement, build_user_trend
+from .assessment import (
+    assess_statement, build_user_trend, build_user_overview, resolve_overview_range,
+)
 from .messaging import message_for, SIGNPOSTS, DISCLAIMER
 
 logger = logging.getLogger(__name__)
@@ -40,6 +42,34 @@ def statements(request):
         'statements': statements,
         'trend': trend,
     })
+
+@login_required
+def overview(request):
+    statements = list(Statement.objects.filter(user=request.user)
+                      .order_by('statement_period'))
+
+    form = OverviewRangeForm(request.GET) if request.GET else OverviewRangeForm()
+    range_choice, from_period, to_period = "6", None, None
+    if request.GET and form.is_valid():
+        range_choice = form.cleaned_data["range"]
+        from_period = form.cleaned_data["from_period"]
+        to_period = form.cleaned_data["to_period"]
+
+    overview_data = None
+    if statements:
+        latest = statements[-1].statement_period
+        resolved = resolve_overview_range(range_choice, latest, from_period, to_period)
+        if resolved:
+            start, end = resolved
+            in_range = [s for s in statements if start <= s.statement_period <= end]
+            overview_data = build_user_overview(in_range, start, end)
+
+    return render(request, 'statements/overview.html', {
+        'form': form,
+        'overview': overview_data,
+        'has_statements': bool(statements),
+    })
+
 
 @login_required
 def new_statement(request):

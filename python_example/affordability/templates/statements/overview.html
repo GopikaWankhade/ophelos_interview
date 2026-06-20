@@ -1,0 +1,88 @@
+{% load money_format %}
+<h1>Your financial overview</h1>
+
+<p><a href="{% url 'statements' %}">← Back to statements</a></p>
+
+{% if not has_statements %}
+  <p>You don't have any statements yet — import a bank statement or create one to see
+     your overview.</p>
+  <p>
+    <a href="{% url 'import_csv' %}">Import bank statement (CSV)</a>
+    &nbsp;|&nbsp;
+    <a href="{% url 'new_statement' %}">Create new statement</a>
+  </p>
+{% else %}
+  <h2>Choose a range</h2>
+  <p>
+    <a href="?range=3">Last 3 months</a> &nbsp;|&nbsp;
+    <a href="?range=6">Last 6 months</a> &nbsp;|&nbsp;
+    <a href="?range=12">Last 12 months</a>
+  </p>
+
+  <form method="get">
+    {{ form.range.errors }}{{ form.non_field_errors }}
+    <label>Custom range:
+      {{ form.from_month.label_tag }} {{ form.from_month }}
+      {{ form.to_month.label_tag }} {{ form.to_month }}
+    </label>
+    {{ form.from_month.errors }}
+    {{ form.to_month.errors }}
+    <input type="hidden" name="range" value="custom">
+    <button type="submit">Show custom range</button>
+  </form>
+
+  {% if overview %}
+    <h2>
+      Covering {{ overview.requested_start|date:"F Y" }} – {{ overview.requested_end|date:"F Y" }}
+      ({{ overview.months_with_data }} month{{ overview.months_with_data|pluralize }} with data)
+    </h2>
+
+    {% if overview.missing_months %}
+      <p>No statement for:
+        {% for m in overview.missing_months %}{{ m|date:"F Y" }}{% if not forloop.last %}, {% endif %}{% endfor %}.
+        These months aren't included in the figures below.</p>
+    {% endif %}
+
+    {% if overview.months_with_data == 0 %}
+      <p>We don't have any statements in this range yet.</p>
+    {% else %}
+      {% if overview.average_disposable_income < 0 %}
+        <p>On average you're spending more than your income — about
+           {{ overview.average_disposable_income|absval|money }} short each month.</p>
+      {% else %}
+        <p>On average you have {{ overview.average_disposable_income|money }} left over each month.</p>
+        {% if overview.trajectory == 'improving' %}<p>Your money left over is trending up.</p>
+        {% elif overview.trajectory == 'worsening' %}<p>Your money left over is trending down.</p>
+        {% elif overview.trajectory == 'stable' %}<p>Your money left over is holding steady.</p>
+        {% endif %}
+      {% endif %}
+
+      <ul>
+        <li>Total income: {{ overview.total_income|money }}</li>
+        <li>Total spending: {{ overview.total_expenditure|money }}</li>
+        <li>Net position: {{ overview.net_position|money }}</li>
+        <li>Spending as a share of income:
+          {% if overview.expenditure_ratio is None %}not available (no income recorded)
+          {% else %}{{ overview.expenditure_ratio }}%{% endif %}</li>
+        <li>{{ overview.months_in_surplus }} month{{ overview.months_in_surplus|pluralize }} in surplus,
+            {{ overview.months_in_deficit }} in deficit</li>
+      </ul>
+
+      <h3>Money left over each month</h3>
+      <table border="0" cellpadding="4">
+        {% for m in overview.months %}
+          <tr>
+            <td>{{ m.period|date:"M Y" }}</td>
+            <td style="width:200px;">
+              <div style="background:{% if m.disposable_income < 0 %}#c0392b{% else %}#27ae60{% endif %};
+                          width:{% widthratio m.disposable_income|absval overview.max_abs_disposable 100 %}%;
+                          min-width:1px; height:14px;"></div>
+            </td>
+            <td>{{ m.disposable_income|money }}</td>
+            <td>{{ m.status_label }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+  {% endif %}
+{% endif %}

@@ -1,4 +1,3 @@
-import calendar
 from datetime import date
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -6,12 +5,9 @@ from django import forms
 from django.conf import settings
 from django.forms import inlineformset_factory
 from .models import Statement, Transaction
+from .assessment import month_end
 
 MONTHS_OFFERED = 12
-
-
-def month_end(year, month):
-    return date(year, month, calendar.monthrange(year, month)[1])
 
 
 class StatementForm(forms.ModelForm):
@@ -88,3 +84,67 @@ class CsvUploadForm(forms.Form):
                 f"This file is too large (max {mb} MB). Please upload a "
                 "smaller export.")
         return uploaded
+
+
+RANGE_CHOICES = [
+    ("3", "Last 3 months"),
+    ("6", "Last 6 months"),
+    ("12", "Last 12 months"),
+    ("custom", "Custom range"),
+]
+MONTHS_FOR_CUSTOM = 24
+
+
+def _custom_month_choices():
+    """Month-end isoformat -> label for the last 24 months (current first)."""
+    today = date.today()
+    year, month = today.year, today.month
+    choices = [("", "—")]
+    for _ in range(MONTHS_FOR_CUSTOM):
+        end = month_end(year, month)
+        choices.append((end.isoformat(), end.strftime("%B %Y")))
+        month -= 1
+        if month == 0:
+            month, year = 12, year - 1
+    return choices
+
+
+class OverviewRangeForm(forms.Form):
+    range = forms.ChoiceField(choices=RANGE_CHOICES, required=False, label="Range")
+    from_month = forms.ChoiceField(choices=[], required=False, label="From")
+    to_month = forms.ChoiceField(choices=[], required=False, label="To")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        months = _custom_month_choices()
+        self.fields["from_month"].choices = months
+        self.fields["to_month"].choices = months
+
+    def clean(self):
+        cleaned = super().clean()
+        if not cleaned.get("range"):
+            cleaned["range"] = "6"
+
+        from_period = self._to_date(cleaned.get("from_month"))
+        to_period = self._to_date(cleaned.get("to_month"))
+
+        if cleaned["range"] == "custom":
+            if from_period is None or to_period is None:
+                raise forms.ValidationError(
+                    "Please choose both a start and an end month for a custom range.")
+            if from_period > to_period:
+                self.add_error("from_month",
+                               "The start month can't be after the end month.")
+
+        cleaned["from_period"] = from_period
+        cleaned["to_period"] = to_period
+        return cleaned
+
+    @staticmethod
+    def _to_date(value):
+        if not value:
+            return None
+        try:
+            return date.fromisoformat(value)
+        except (TypeError, ValueError):
+            return None
